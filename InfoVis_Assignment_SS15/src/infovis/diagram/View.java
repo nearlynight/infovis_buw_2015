@@ -51,7 +51,7 @@ public class View extends JPanel{
 		
 		// OVERVIEW RECTANGLE
 		overviewRect = new Rectangle2D.Double(0,0,getWidth(), getHeight());
-		
+		  
 		
 		// translate
 		// scale
@@ -61,7 +61,7 @@ public class View extends JPanel{
 		
 		// paintDiagram()
 		
-		// downscale overview window when scaling (remains size)
+		// TODO downscale overview window when scaling (remains size)
 		g2D.scale(1/scale, 1/scale);
 		g2D.scale(.2,.2);
 		g2D.setClip(null);
