@@ -23,10 +23,13 @@ public class MouseController implements MouseListener,MouseMotionListener {
 	 private Element selectedElement = new None();
 	 private double mouseOffsetX;
 	 private double mouseOffsetY;
+		private int mouseClickedX;
+		private int mouseClickedY;
 	 private boolean edgeDrawMode = false;
 	 private DrawingEdge drawingEdge = null;
 	 private boolean fisheyeMode;
 	 private GroupingRectangle groupRectangle;
+	 private boolean dragMarkerMode = false;
 	/*
 	 * Getter And Setter
 	 */
@@ -92,10 +95,15 @@ public class MouseController implements MouseListener,MouseMotionListener {
 		int y = e.getY();
 		double scale = view.getScale();
 		
-	   
-	   if (edgeDrawMode){
+		if (view.isInMarker(x,y)) {
+			view.setMarkerCenter(e.getX(), e.getY());
+			view.repaint();
+			dragMarkerMode = true;
+			System.out.println("draaaggin enabled");
+		} else  if (edgeDrawMode){
 			drawingEdge = new DrawingEdge((Vertex)getElementContainingPosition(x/scale,y/scale));
 			model.addElement(drawingEdge);
+			System.out.println("edgeDrawMode");
 		} else if (fisheyeMode){
 			/*
 			 * do handle interactions in fisheye mode
@@ -110,11 +118,14 @@ public class MouseController implements MouseListener,MouseMotionListener {
 			mouseOffsetX = x - selectedElement.getX() * scale ;
 			mouseOffsetY = y - selectedElement.getY() * scale ;	
 		}
+
 		
 	}
 	public void mouseReleased(MouseEvent arg0){
 		int x = arg0.getX();
 		int y = arg0.getY();
+		dragMarkerMode = false;
+		System.out.println("dragging disabled");
 		
 		if (drawingEdge != null){
 			Element to = getElementContainingPosition(x, y);
@@ -179,9 +190,16 @@ public class MouseController implements MouseListener,MouseMotionListener {
 		} else if (edgeDrawMode){
 			drawingEdge.setX(e.getX());
 			drawingEdge.setY(e.getY());
-		}else if(selectedElement != null){
+		} else if (dragMarkerMode) {
+			view.setMarkerCenter(e.getX(), e.getY());
+			System.out.println("drag Marker");
+		} else if (selectedElement != null){
+			// make nodes dragable
 			selectedElement.updatePosition((e.getX()-mouseOffsetX)/scale, (e.getY()-mouseOffsetY) /scale);
+			//System.out.println("drag Node");
 		}
+		mouseClickedX = e.getX();
+		mouseClickedY = e.getY();
 		view.repaint();
 	}
 	public void mouseMoved(MouseEvent e) {
