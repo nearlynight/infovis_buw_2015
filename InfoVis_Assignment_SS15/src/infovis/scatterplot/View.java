@@ -27,7 +27,6 @@ public class View extends JPanel {
 		public void paint(Graphics g) {
 			Graphics2D g2D = (Graphics2D) g;
 			g2D.clearRect(0, 0, getWidth(), getHeight());
-			g2D.draw(markerRectangle);
 			g2D.setColor(Color.RED);
 			g2D.draw(markerRectangle);
 			g2D.setColor(Color.BLACK);
@@ -41,9 +40,11 @@ public class View extends JPanel {
 					g2D.drawString(l, boxSize*i+outerSpace+10, -35);
 					g2D.rotate(-Math.PI*.5);
 					for (int k = 0; k < model.getList().size(); ++k) {
-						Point2D myPoint = giveMePoint(i,j,k);						
+						Point2D myPoint = giveMePoint(i,j,k);			
+						g2D.setColor(model.getList().get(k).getColor());
 						g2D.drawRect((int)myPoint.getX(), (int)myPoint.getY(), circleSize, circleSize);
 					}
+					g2D.setColor(Color.BLACK);
 				}	
 			}		
 		}
@@ -81,10 +82,21 @@ public class View extends JPanel {
 			int width = widthMax - widthMin;
 			int heigth = heigthMax - heigthMin;
 			markerRectangle.setRect(widthMin, heigthMin, width, heigth);
+			colorMarkedPoints(myTile.a, myTile.b);
 
 			//int restrictX = restrictRectangleMarkerX(xPress, yPress, width, heigth);
 		}
 		
+		public void colorMarkedPoints(int i, int j) {
+			for (int k = 0; k < model.getList().size(); ++k) {
+				Point2D point = giveMePoint(i,j,k);
+				if (markerRectangle.contains(point)) {
+					model.getList().get(k).setColor(Color.RED);
+				} else {
+					model.getList().get(k).setColor(Color.BLACK);
+				}
+			}
+		}
 		
 		public class Tile {
 			public int a;
