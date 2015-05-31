@@ -13,8 +13,10 @@ import javax.swing.JPanel;
 public class View extends JPanel {
 	     private Model model = null;
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0); 
-	     private int boxSize = 150;
-	     private int outerSpace = 50;
+	     private final int boxSize = 150;
+	     private final int smallBoxSize = 147;
+	     private final int outerSpace = 50;
+	     private final int circleSize = 3;
 
 		 public Rectangle2D getMarkerRectangle() {
 			return markerRectangle;
@@ -23,14 +25,10 @@ public class View extends JPanel {
 		@Override
 		public void paint(Graphics g) {
 			Graphics2D g2D = (Graphics2D) g;
-			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 			g2D.clearRect(0, 0, getWidth(), getHeight());
 			g2D.setColor(Color.BLACK);
 			g2D.fill(markerRectangle);
 			g2D.draw(markerRectangle);
-			
-			//g2D.drawString("test", 100, 100);
-			//g2D.drawRect(100, 110, 100, 100);
 
 			for (int i = 0; i<model.getDim(); ++i) {
 				for (int j = 0; j<model.getDim(); ++j) {
@@ -40,9 +38,26 @@ public class View extends JPanel {
 					g2D.rotate(Math.PI*0.5);
 					g2D.drawString(l, boxSize*i+outerSpace+10, -35);
 					g2D.rotate(-Math.PI*.5);
+					for (int k = 0; k < model.getList().size(); ++k) {
+						double valueX = model.getList().get(k).getValues()[i];
+						double valueY = model.getList().get(k).getValues()[j];
+						
+						double maxX = model.getRanges().get(i).getMax();
+						double maxY = model.getRanges().get(j).getMax();
+						double minX = model.getRanges().get(i).getMin();
+						double minY = model.getRanges().get(j).getMin();
+						
+						double posX = 1 - ((maxX-valueX) / (maxX-minX));
+						double posY = 1 - ((maxY-valueY) / (maxY-minY));
+						int pointX = outerSpace + boxSize*i + (int)(smallBoxSize * posX);
+						int pointY = outerSpace + boxSize*j + (int)(smallBoxSize * posY);
+						g2D.drawRect(pointX, pointY, circleSize, circleSize);
+					}
 				}	
 			}
 
+
+			
 			
 			/*
 	        for (String l : model.getLabels()) {
@@ -50,11 +65,13 @@ public class View extends JPanel {
 				Debug.print(",  ");
 				Debug.println("");
 			}
+			
 			for (Range range : model.getRanges()) {
 				Debug.print(range.toString());
 				Debug.print(",  ");
 				Debug.println("");
 			}
+			/*
 			for (Data d : model.getList()) {
 				Debug.print(d.toString());
 				Debug.println("");
