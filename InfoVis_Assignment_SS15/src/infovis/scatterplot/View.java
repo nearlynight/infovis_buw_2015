@@ -15,7 +15,7 @@ public class View extends JPanel {
 	     private Model model = null;
 	     private Rectangle2D markerRectangle = new Rectangle2D.Double(0,0,0,0); 
 	     private final int boxSize = 150;
-	     private final int circleSize = 3;
+	     private final int circleSize = boxSize/50;
 	     private final int smallBoxSize = boxSize-circleSize;
 	     private final int outerSpace = 50;     
 
@@ -27,7 +27,9 @@ public class View extends JPanel {
 		public void paint(Graphics g) {
 			Graphics2D g2D = (Graphics2D) g;
 			g2D.clearRect(0, 0, getWidth(), getHeight());
-			g2D.setColor(Color.RED);
+			g2D.setColor(Color.LIGHT_GRAY);
+			g2D.fill(markerRectangle);
+			g2D.setColor(Color.GRAY);
 			g2D.draw(markerRectangle);
 			g2D.setColor(Color.BLACK);
 
