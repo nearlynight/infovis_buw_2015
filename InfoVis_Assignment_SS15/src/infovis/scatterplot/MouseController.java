@@ -10,8 +10,6 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	private View view = null;
 	private int xPress;
 	private int yPress;
-	private int xRelease;
-	private int yRelease;
 
 	public void mouseClicked(MouseEvent arg0) {
 	}
@@ -25,15 +23,9 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent arg0) {
 		xPress = arg0.getX();
 		yPress = arg0.getY();
-		//Iterator<Data> iter = model.iterator();
-		//view.getMarkerRectangle().setRect(x,y,w,h);
-		//view.repaint();
-
 	}
 
 	public void mouseReleased(MouseEvent arg0) {
-		xRelease = arg0.getX();
-		yRelease = arg0.getY();
 	}
 
 	public void mouseDragged(MouseEvent arg0) {

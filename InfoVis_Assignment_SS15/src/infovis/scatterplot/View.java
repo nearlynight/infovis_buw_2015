@@ -55,6 +55,7 @@ public class View extends JPanel {
 			this.model = model;
 		}
 		
+		// calculate position of data points
 		public Point2D giveMePoint (int i, int j, int k) {
 			double valueX = model.getList().get(k).getValues()[i];
 			double valueY = model.getList().get(k).getValues()[j];
@@ -71,8 +72,12 @@ public class View extends JPanel {
 			return new Point2D.Double(pointX, pointY);
 		}
 		
+		// called at mouseDragged
+		// restrict markerRect size to one tile
 		public void updateMarkerRect(int xPress, int yPress, int xDrag, int yDrag) {
 			Tile myTile = new Tile(xPress, yPress); 
+			
+			// check if markerRect was dragged outside of tile or not
 			xDrag = Math.max(myTile.getXMin(), xDrag);
 			xDrag = Math.min(myTile.getXMax(), xDrag);
 			yDrag = Math.max(myTile.getYMin(), yDrag);
@@ -85,8 +90,6 @@ public class View extends JPanel {
 			int heigth = heigthMax - heigthMin;
 			markerRectangle.setRect(widthMin, heigthMin, width, heigth);
 			colorMarkedPoints(myTile.a, myTile.b);
-
-			//int restrictX = restrictRectangleMarkerX(xPress, yPress, width, heigth);
 		}
 		
 		public void colorMarkedPoints(int i, int j) {
