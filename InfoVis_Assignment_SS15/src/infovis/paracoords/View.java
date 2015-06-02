@@ -60,8 +60,7 @@ public class View extends JPanel {
 		}
 	}
 	
-	// generate one line between two axes
-	// create line segment
+	// generate one line between two axes (create line segment)
 	private Line2D getLine(int d1, int d2, int i){
 		int   x1;
 		int   y1;
@@ -86,12 +85,13 @@ public class View extends JPanel {
 	
 	// ein Aufruf der Funktion kuemmert sich um ein Auto (i)
 	// map key = pixel position of axes
+	// get line segment for data set entry and combine them to one line
 	private List<Line2D> getLines(int i){
 		List<Line2D> l = new ArrayList<Line2D>();
 		int prev = -1;
 		// iterate over map 
 		for (Map.Entry<Integer, Integer> e : axesMap.entrySet()){
-			// get line segment for data set entry and combine them to one line
+			
 			l.add(getLine(prev, e.getValue(), i));
 			prev = e.getValue();
 		}
@@ -122,9 +122,10 @@ public class View extends JPanel {
 		mark();
 	}
 	
+	// check if courser is in axes range
 	public int aboveAxis(int x, int y){
 		for (int i=0; i<axes.length; i++){
-			// check if courser is in axes range
+			
 			if (Math.abs(axes[i]-x) < 3
 					&& y > upperPadding
 					&& y < upperPadding + height){
@@ -135,6 +136,7 @@ public class View extends JPanel {
 		return -1;
 	}
 	
+	// move active axis 
 	public void moveAxis(int i, int x){
 		axes[i] += x;
 		marker = new Rectangle2D.Double(0,0,0,0);
@@ -147,8 +149,9 @@ public class View extends JPanel {
 		paint(g);
 	}
 	
+	// fill axesMap with xValues and number of axes
 	public void update(){
-		axesMap.clear();
+		axesMap.clear();	// b/c after moving axes it has new position and index
 		for (int i=0; i<model.getDim(); i++){
 			axesMap.put(axes[i], i);
 		}
