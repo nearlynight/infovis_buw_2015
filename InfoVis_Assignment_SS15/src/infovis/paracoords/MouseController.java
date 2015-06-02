@@ -12,6 +12,12 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	private Model model = null;
 	Shape currentShape = null;
 	
+	private boolean markerMode   = false;
+	private boolean moveAxisMode = false;
+	private int activeAxis = 0;
+	private int clickedX = 0;
+	private int clickedY = 0;
+	
 	public void mouseClicked(MouseEvent e) {
 		
 	}
@@ -25,15 +31,33 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-
+		if(view.aboveAxis(e.getX(), e.getY()) != -1){
+			// move axes
+			moveAxisMode = true;
+			activeAxis = view.aboveAxis(e.getX(), e.getY());
+		}
+		else{
+			// span marker rect
+			markerMode = true;
+		}
+		clickedX = e.getX();
+		clickedY = e.getY();
 	}
 
 	public void mouseReleased(MouseEvent e) {
-
+		markerMode   = false;
+		moveAxisMode = false;
 	}
 
 	public void mouseDragged(MouseEvent e) {
-
+		if (moveAxisMode){
+			view.moveAxis(activeAxis, e.getX()-clickedX);
+			clickedX = e.getX();
+		}
+		else if (markerMode){
+			view.updateMarker(clickedX, clickedY, e.getX(), e.getY());
+		}
+		view.repaint();
 	}
 
 	public void mouseMoved(MouseEvent e) {
