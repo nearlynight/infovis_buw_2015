@@ -126,7 +126,7 @@ public class View extends JPanel {
 	public int aboveAxis(int x, int y){
 		for (int i=0; i<axes.length; i++){
 			
-			if (Math.abs(axes[i]-x) < 3
+			if (Math.abs(axes[i]-x) < 5
 					&& y > upperPadding
 					&& y < upperPadding + height){
 				// return which axes is selected
