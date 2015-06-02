@@ -16,6 +16,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.awt.geom.Point2D;
 
 public class MouseController implements MouseListener,MouseMotionListener {
 	 private Model model;
@@ -28,8 +29,11 @@ public class MouseController implements MouseListener,MouseMotionListener {
 	 private boolean edgeDrawMode = false;
 	 private DrawingEdge drawingEdge = null;
 	 private boolean fisheyeMode;
+	 private Fisheye	fisheye = null;
 	 private GroupingRectangle groupRectangle;
 	 private boolean dragMarkerMode = false;
+	 
+	 
 	/*
 	 * Getter And Setter
 	 */
@@ -94,6 +98,7 @@ public class MouseController implements MouseListener,MouseMotionListener {
 		int x = e.getX();
 		int y = e.getY();
 		double scale = view.getScale();
+		Point2D modelPos = view.viewToModel(e.getX(), e.getY());
 		
 		if (view.isInMarker(x,y)) {
 			view.setMarkerCenter(e.getX(), e.getY());
@@ -105,9 +110,8 @@ public class MouseController implements MouseListener,MouseMotionListener {
 			model.addElement(drawingEdge);
 			System.out.println("edgeDrawMode");
 		} else if (fisheyeMode){
-			/*
-			 * do handle interactions in fisheye mode
-			 */
+			fisheye.setMouseCoords((int)modelPos.getX(), (int)modelPos.getY());
+			view.setModel(fisheye.transform(model));
 			view.repaint();
 		} else {
 			
@@ -179,13 +183,13 @@ public class MouseController implements MouseListener,MouseMotionListener {
 		int x = e.getX();
 		int y = e.getY();
 		double scale = view.getScale();
+		Point2D modelPos = view.viewToModel(e.getX(), e.getY());
 		/*
 		 * Aufgabe 1.2
 		 */
 		if (fisheyeMode){
-			/*
-			 * handle fisheye mode interactions
-			 */
+			fisheye.setMouseCoords((int)modelPos.getX(), (int)modelPos.getY());
+			view.setModel(fisheye.transform(model));
 			view.repaint();
 		} else if (edgeDrawMode){
 			drawingEdge.setX(e.getX());
@@ -213,11 +217,10 @@ public class MouseController implements MouseListener,MouseMotionListener {
 	
 	public void setFisheyeMode(boolean b) {
 		fisheyeMode = b;
+		
 		if (b){
 			Debug.p("new Fisheye Layout");
-			/*
-			 * handle fish eye initial call
-			 */
+			fisheye = new Fisheye(view);
 			view.repaint();
 		} else {
 			Debug.p("new Normal Layout");

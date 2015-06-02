@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
@@ -121,7 +122,9 @@ public class View extends JPanel{
 		} else {
 			return false;
 		}
-		
+	}
+	public Point2D viewToModel(double x, double y) {
+		return new Point2D.Double((x - translateX) / scale, (y - translateY) / scale);
 	}
 }
  
