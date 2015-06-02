@@ -115,19 +115,23 @@ public class MouseController implements MouseListener,MouseMotionListener {
 			view.repaint();
 		} else {
 			
-			selectedElement = getElementContainingPosition(x/scale,y/scale);
+			selectedElement = getElementContainingPosition(modelPos.getX(),modelPos.getY());
+			Point2D elemViewPos = view.modelToView(selectedElement.getX(), selectedElement.getY());
+			
 			/*
 			 * calculate offset
 			 */
-			mouseOffsetX = x - selectedElement.getX() * scale ;
-			mouseOffsetY = y - selectedElement.getY() * scale ;	
+			
+			mouseOffsetX = e.getX() - elemViewPos.getX();
+			mouseOffsetY = e.getY() - elemViewPos.getY();
 		}
 
 		
 	}
 	public void mouseReleased(MouseEvent arg0){
-		int x = arg0.getX();
-		int y = arg0.getY();
+		Point2D modelPos = view.viewToModel(arg0.getX(), arg0.getY());
+		double x = modelPos.getX();
+		double y = modelPos.getY();
 		dragMarkerMode = false;
 		System.out.println("dragging disabled");
 		
@@ -199,7 +203,10 @@ public class MouseController implements MouseListener,MouseMotionListener {
 			System.out.println("drag Marker");
 		} else if (selectedElement != null){
 			// make nodes dragable
-			selectedElement.updatePosition((e.getX()-mouseOffsetX)/scale, (e.getY()-mouseOffsetY) /scale);
+			Point2D updatePos = view.viewToModel(e.getX()-mouseOffsetX, e.getY()-mouseOffsetY);
+			selectedElement.updatePosition(updatePos.getX(), updatePos.getY());
+			
+			//selectedElement.updatePosition((e.getX()-mouseOffsetX)/scale, (e.getY()-mouseOffsetY) /scale);
 			//System.out.println("drag Node");
 		}
 		mouseClickedX = e.getX();

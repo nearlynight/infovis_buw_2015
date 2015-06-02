@@ -18,8 +18,9 @@ public class View extends JPanel{
 	private Model model = null;
 	private Color color = Color.BLUE;
 	private double scale = 1;
-	private double translateX= 0;
-	private double translateY= 0;
+	//private double translateX= 0;
+	//private double translateY= 0;
+	private double 				translateX, translateY, transOvX, transOvY = 0;
 	private Rectangle2D overviewRect = new Rectangle2D.Double(); 
 	private Rectangle2D marker = new Rectangle2D.Double(); 
 	private double overviewScale = .2;
@@ -113,8 +114,8 @@ public class View extends JPanel{
 		return marker.contains(x, y);
 	}
 	public void setMarkerCenter(double x, double y){
-		translateX = -x/overviewScale*scale + getWidth() *.5;
-		translateY = -y/overviewScale*scale + getHeight()*.5;
+		translateX = -(x - transOvX) / overviewScale * scale + getWidth() * .5;
+		translateY = -(y - transOvY) / overviewScale * scale + getHeight()* .5;
 	}
 	public boolean isInMarker(double x, double y){
 		if (x > 0 && x < getWidth()*overviewScale && y > 0 && y < getHeight()*overviewScale) {
@@ -125,6 +126,9 @@ public class View extends JPanel{
 	}
 	public Point2D viewToModel(double x, double y) {
 		return new Point2D.Double((x - translateX) / scale, (y - translateY) / scale);
+	}
+	public Point2D modelToView(double x, double y) {
+		return new Point2D.Double(x * scale + translateX, y * scale + translateY);
 	}
 }
  

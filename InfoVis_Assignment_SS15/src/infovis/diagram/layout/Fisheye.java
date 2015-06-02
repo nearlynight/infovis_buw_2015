@@ -32,7 +32,9 @@ public class Fisheye implements Layout {
 	public Model transform(Model model) {
 		Model newModel = new Model();
 		
+		
 		for (Vertex v : model.getVertices()){
+			// select visible vertices 
 			if (view.getBounds().contains(v.getX(), v.getY()))
 				newModel.addVertex(transformVertex(v));
 		}
@@ -69,7 +71,8 @@ public class Fisheye implements Layout {
 		return f + g(dnorm / dmax) * dmax;
 	}
 	
-	// compute size
+	// COMPUTE SIZE
+	// geometric size, undistorted
 	private double getSNorm(Vertex v) {
 		return v.getWidth();
 	}
