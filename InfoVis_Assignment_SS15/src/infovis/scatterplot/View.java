@@ -38,7 +38,7 @@ public class View extends JPanel {
 					g2D.drawRect(boxSize*i+outerSpace, boxSize*j+outerSpace, boxSize, boxSize);
 					String l = model.getLabels().get(i);
 					g2D.drawString(l, boxSize*i+outerSpace+10, 45);
-					g2D.rotate(Math.PI*0.5);
+					g2D.rotate(Math.PI*.5);
 					g2D.drawString(l, boxSize*i+outerSpace+10, -35);
 					g2D.rotate(-Math.PI*.5);
 					for (int k = 0; k < model.getList().size(); ++k) {
@@ -107,6 +107,7 @@ public class View extends JPanel {
 			public int a;
 			public int b;
 			
+			// tile number is...
 			public Tile (int xPress, int yPress) {
 				this.a = (xPress - outerSpace) / boxSize;
 				this.b = (yPress - outerSpace) / boxSize;
