@@ -55,9 +55,7 @@ public class Fisheye implements Layout {
 		double height = v.getHeight() * sg;
 		double x = f1(v.getCenterX(), fx, view.getWidth() ) - width / 2;
 		double y = f1(v.getCenterY(), fy, view.getHeight()) - height / 2;
-		
-		System.out.println(sg);
-		
+
 		return new Vertex(x, y, width, height);
 	}
 	
@@ -67,7 +65,7 @@ public class Fisheye implements Layout {
 		//return (d + 1) / Math.pow(d * x + 1, 2);
 	}
 	
-	
+	// position of vertex in fisheye
 	private double f1(double v, double f, double bound) {
 		double dmax  = v > f ? bound - f : -f;
 		double dnorm = v - f;
@@ -76,7 +74,7 @@ public class Fisheye implements Layout {
 	}
 	
 	// COMPUTE SIZE
-	// geometric size, undistorted
+	// length of side of undistorted vertex
 	private double getSNorm(Vertex v) {
 		return v.getWidth();
 	}
@@ -95,7 +93,7 @@ public class Fisheye implements Layout {
 		return new Point2D.Double(qx, qy);
 	}
 	
-	// geometric size
+	// geometric size of vertex
 	private double sGeom(Vertex v) {
 		Point2D qNorm = getQNorm(v);
 		double px = f1(v.getCenterX(), fx, view.getWidth());

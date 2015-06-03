@@ -38,6 +38,7 @@ public class View extends JPanel {
 		g2D.setColor(Color.red);
 		g2D.draw(marker);
 		g2D.setColor(Color.black);
+		// labels bottom and axis
 		for (int i=0; i<model.getDim(); i++){
 			String l = model.getLabels().get(i);
 			g2D.translate(axes[i], (upperPadding + height + 20));
@@ -47,6 +48,7 @@ public class View extends JPanel {
 			g2D.translate(-axes[i], -(upperPadding + height + 20));
 			g2D.drawLine(axes[i], upperPadding - 5, axes[i], upperPadding + height + 5);
 		}
+		// labels left
 		for (int i=0; i<model.getList().size(); i++){
 			String l = model.getList().get(i).getLabel();
 			g2D.drawString(l, 10, 10 + upperPadding + i*itemDistance);
