@@ -106,7 +106,7 @@ public class View extends JPanel {
 			for (Line2D l : getLines(i)){	// iterate over all segments (segment is part between two axis) of one line
 				if (marker.intersectsLine(l)){
 					item.setColor(Color.red);
-					break;
+					//break;
 				}
 			}
 		}
@@ -161,7 +161,7 @@ public class View extends JPanel {
 		return model;
 	}
 
-	// 
+	
 	public void setModel(Model model) {
 		this.model = model;
 		axes = new int[model.getDim()];

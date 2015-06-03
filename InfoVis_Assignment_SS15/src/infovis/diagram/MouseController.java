@@ -98,17 +98,17 @@ public class MouseController implements MouseListener,MouseMotionListener {
 		int x = e.getX();
 		int y = e.getY();
 		double scale = view.getScale();
-		Point2D modelPos = view.viewToModel(e.getX(), e.getY());
+		Point2D modelPos = view.viewToModel(e.getX(), e.getY());		
 		
 		if (view.isInMarker(x,y)) {
 			view.setMarkerCenter(e.getX(), e.getY());
 			view.repaint();
 			dragMarkerMode = true;
-			System.out.println("draaaggin enabled");
+			//System.out.println("draaaggin enabled");
 		} else  if (edgeDrawMode){
 			drawingEdge = new DrawingEdge((Vertex)getElementContainingPosition(x/scale,y/scale));
 			model.addElement(drawingEdge);
-			System.out.println("edgeDrawMode");
+			//System.out.println("edgeDrawMode");
 		} else if (fisheyeMode){
 			fisheye.setMouseCoords((int)modelPos.getX(), (int)modelPos.getY());
 			view.setModel(fisheye.transform(model));
@@ -133,7 +133,7 @@ public class MouseController implements MouseListener,MouseMotionListener {
 		double x = modelPos.getX();
 		double y = modelPos.getY();
 		dragMarkerMode = false;
-		System.out.println("dragging disabled");
+		//System.out.println("dragging disabled");
 		
 		if (drawingEdge != null){
 			Element to = getElementContainingPosition(x, y);
@@ -200,7 +200,7 @@ public class MouseController implements MouseListener,MouseMotionListener {
 			drawingEdge.setY(e.getY());
 		} else if (dragMarkerMode) {
 			view.setMarkerCenter(e.getX(), e.getY());
-			System.out.println("drag Marker");
+			//System.out.println("drag Marker");
 		} else if (selectedElement != null){
 			// make nodes dragable
 			Point2D updatePos = view.viewToModel(e.getX()-mouseOffsetX, e.getY()-mouseOffsetY);

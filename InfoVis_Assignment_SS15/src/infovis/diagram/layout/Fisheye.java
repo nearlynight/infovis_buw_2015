@@ -48,12 +48,15 @@ public class Fisheye implements Layout {
 		return newModel;
 	}
 	
+	// resize vertex according to distance focus (fx, fy)
 	private Vertex transformVertex(Vertex v) {
 		double sg = sGeom(v);
 		double width = v.getWidth() * sg;
 		double height = v.getHeight() * sg;
 		double x = f1(v.getCenterX(), fx, view.getWidth() ) - width / 2;
 		double y = f1(v.getCenterY(), fy, view.getHeight()) - height / 2;
+		
+		System.out.println(sg);
 		
 		return new Vertex(x, y, width, height);
 	}
@@ -63,6 +66,7 @@ public class Fisheye implements Layout {
 		return (d + 1) * x / (d * x + 1);
 		//return (d + 1) / Math.pow(d * x + 1, 2);
 	}
+	
 	
 	private double f1(double v, double f, double bound) {
 		double dmax  = v > f ? bound - f : -f;
@@ -78,6 +82,11 @@ public class Fisheye implements Layout {
 	}
 	
 	// avoid overlapping of vertices in fisheye view
+	// "Because magnification decreases as we move away 
+	//  from the focus, taking a point farther away from the
+	//  focus rather than closer to the focus is conservative. 
+	//  It ensures that vertices that do not overlap in the 
+	//  normal view do not overlap in the fisheye view either."
 	private Point2D getQNorm(Vertex v) {
 		double qs = s * getSNorm(v) / 2;												// distance of the center of the vertex away from the focus
 		double qx = fx < v.getCenterX() ? v.getCenterX() + qs : v.getCenterX() - qs;	// Xcoord of fisheye vertex
@@ -86,6 +95,7 @@ public class Fisheye implements Layout {
 		return new Point2D.Double(qx, qy);
 	}
 	
+	// geometric size
 	private double sGeom(Vertex v) {
 		Point2D qNorm = getQNorm(v);
 		double px = f1(v.getCenterX(), fx, view.getWidth());
